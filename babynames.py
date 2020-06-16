@@ -44,8 +44,27 @@ def extract_names(filename):
     ['2006', 'Aaliyah 91', 'Aaron 57', 'Abagail 895', ...]
     """
     names = []
-    # +++your code here+++
-    return names
+    with open(filename) as f:
+        source_file = f.read()
+        year = re.search(r'Popularity\sin\s(\d+)', source_file)
+        baby_names = re.findall(
+            r'<td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>', source_file)
+
+        dict_boys = {}
+        dict_girls = {}
+
+        # boy ranks
+        for rank_b in baby_names:
+            dict_boys[rank_b[0]] = rank_b[1]
+        # girl ranks
+        for rank_g in baby_names:
+            dict_girls[rank_g[0]] = rank_g[2]
+
+        for key, value in dict_boys.items():
+            print(value, '', key)
+
+        for key, value in dict_girls.items():
+            print(value, '', key)
 
 
 def create_parser():
@@ -82,7 +101,8 @@ def main(args):
     # Use the create_summary flag to decide whether to print the list
     # or to write the list to a summary file (e.g. `baby1990.html.summary`).
 
-    # +++your code here+++
+    for each in file_list:
+        extract_names(each)
 
 
 if __name__ == '__main__':
