@@ -117,7 +117,6 @@ def main(args):
 
     for file in file_list:
         extract_names(file)
-        print(file_list)
 
     name_output = extract_names(file)
 
