@@ -44,8 +44,59 @@ def extract_names(filename):
     ['2006', 'Aaliyah 91', 'Aaron 57', 'Abagail 895', ...]
     """
     names = []
-    # +++your code here+++
+    names_dict = {}
+
+    with open(filename) as f:
+        source_file = f.read()
+        pattern = re.compile(r'Popularity in')
+        matches = pattern.finditer(source_file)
+        for match in matches:
+            year = match.span()
+            names.append(source_file[year[1]:][1:5])
+
+    with open(filename) as l:
+        for line in l:
+            rank_name = re.findall(
+                r'"right"><td>(.*?)</td><td>(.*?)</td><td>(.*?)</td>', line)
+            for name in rank_name:
+                if not name[1] in names_dict:
+                    names_dict[name[1]] = name[0]
+                if not name[2] in names_dict:
+                    names_dict[name[2]] = name[0]
+    for key in sorted(names_dict):
+        names.append(key + " " + names_dict[key])
+
     return names
+
+    #  dict_boys = {}
+    #   dict_girls = {}
+
+    # boy ranks
+    #    for rank_b in baby_names:
+    #         dict_boys[rank_b[1]] = rank_b[0]
+    # girl ranks
+    # for rank_g in baby_names:
+    #     dict_girls[rank_g[2]] = rank_g[0]
+
+    # for key, value in sorted(dict_boys.items()):
+    #     print(value, '', key)
+
+    # for key, value in sorted(dict_girls.items()):
+    #     print(value, '', key)
+
+    # combined_dict = dict(dict_boys, **dict_girls)
+
+    # print(dict_boys)
+
+    # for key, value in combined_dict.items():
+    #     print(key, value)
+
+    # my_char = " "
+    # names = [(item[0] + my_char + item[1])
+    #          for item in combined_dict.items()]
+    # names.insert(0, year)
+
+    # return names
 
 
 def create_parser():
@@ -71,7 +122,6 @@ def main(args):
     if not ns:
         parser.print_usage()
         sys.exit(1)
-
     file_list = ns.files
 
     # option flag
@@ -82,7 +132,19 @@ def main(args):
     # Use the create_summary flag to decide whether to print the list
     # or to write the list to a summary file (e.g. `baby1990.html.summary`).
 
-    # +++your code here+++
+    for each in file_list:
+        each_file = extract_names(each)
+        each_file = "\n".join(each_file)
+        if not create_summary:
+            print(each_file)
+        else:
+            new_file = each + ".summary"
+            f = open(new_file, "w")
+            f.write(str(each_file))
+
+    # text = '\n'.join(name_output)
+    # with open(file + ".summary", 'w+') as f:
+    #     f.write(text)
 
 
 if __name__ == '__main__':
