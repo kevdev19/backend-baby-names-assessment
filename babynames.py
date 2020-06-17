@@ -121,7 +121,7 @@ def main(args):
     name_output = extract_names(file)
 
     text = '\n'.join(name_output)
-    with open('baby1990.html.summary', 'w+') as f:
+    with open(file + ".summary", 'w+') as f:
         f.write(text)
 
 
